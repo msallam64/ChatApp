@@ -31,6 +31,22 @@
                 />
 
         </androidx.appcompat.widget.Toolbar>
+        <com.google.android.material.tabs.TabLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/tab_layout"
+            android:background="@color/colorPrimaryDark"
+            app:tabSelectedTextColor="#FFF"
+            app:tabIndicatorColor="#FFF"
+            app:tabTextColor="#FFF"/>
     </com.google.android.material.appbar.AppBarLayout>
+
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
 
 </LinearLayout>
