@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="16dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LogIn"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
+            />
+
+
+        <EditText
+            android:id="@+id/emaillogin"
+            android:layout_width="347dp"
+            android:layout_height="66dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/inputs"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:padding="15dp"/>
+
+        <EditText
+            android:id="@+id/passwordlogin"
+            android:layout_width="344dp"
+            android:layout_height="59dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/inputs"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:padding="15dp"/>
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="344dp"
+            android:layout_height="59dp"
+            android:text="Login"
+            android:textColor="#FFFF"
+            android:layout_marginTop="30dp"
+            android:background="@color/colorPrimaryDark"
+            />
+
+
+
+    </LinearLayout>
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/bar_layout" />
+
+</RelativeLayout>
