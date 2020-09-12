@@ -3,16 +3,21 @@ package com.example.chatapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.chatapp.Adapter.MessageAdapter;
+import com.example.chatapp.Model.Chat;
 import com.example.chatapp.Model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,7 +27,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -34,8 +41,12 @@ public class MessageActivity extends AppCompatActivity {
     DatabaseReference reference;
     Intent intent;
 
-ImageButton brn_send;
-EditText text_send;
+    MessageAdapter messageAdapter;
+    List<Chat> mchat;
+    RecyclerView recyclerView;
+
+    ImageButton brn_send;
+    EditText text_send;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,38 +64,46 @@ EditText text_send;
             }
         });
 
-        brn_send=findViewById(R.id.send_message);
-        text_send=findViewById(R.id.text_message);
-        profile_image=findViewById(R.id.profile_image);
-        userName=findViewById(R.id.username);
-        intent=getIntent();
-        final String userid=intent.getStringExtra("userid");
-        firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
+        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayout = new LinearLayoutManager(getApplicationContext());
+        linearLayout.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayout);
+
+
+        brn_send = findViewById(R.id.send_message);
+        text_send = findViewById(R.id.text_message);
+        profile_image = findViewById(R.id.profile_image);
+        userName = findViewById(R.id.username);
+        intent = getIntent();
+        final String userid = intent.getStringExtra("userid");
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         brn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String msg=text_send.getText().toString();
-                if (!msg.equals("")){
-                    sendMessage(firebaseUser.getUid(),userid,msg);
-                }else {
+                String msg = text_send.getText().toString();
+                if (!msg.equals("")) {
+                    sendMessage(firebaseUser.getUid(), userid, msg);
+                } else {
                     Toast.makeText(MessageActivity.this, "Type A Message ", Toast.LENGTH_SHORT).show();
                 }
                 text_send.setText("");
             }
         });
-        reference= FirebaseDatabase.getInstance().getReference("Users").child(userid);
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user=snapshot.getValue(User.class);
+                User user = snapshot.getValue(User.class);
                 userName.setText(user.getUsername());
                 if (user.getImageURL().equals("default")) {
                     profile_image.setImageResource(R.mipmap.icon);
                 } else {
                     Glide.with(MessageActivity.this).load(user.getImageURL()).into(profile_image);
                 }
+                readMessage(firebaseUser.getUid(), userid, user.getImageURL());
             }
 
             @Override
@@ -93,13 +112,39 @@ EditText text_send;
             }
         });
     }
-    private void sendMessage(String sender,String receiver,String message){
-        DatabaseReference reference=FirebaseDatabase.getInstance().getReference();
-        HashMap<String ,Object> hashMap=new HashMap<>();
-        hashMap.put("sender",sender);
-        hashMap.put("receiver",receiver);
-        hashMap.put("message",message);
+
+    private void sendMessage(String sender, String receiver, String message) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("sender", sender);
+        hashMap.put("receiver", receiver);
+        hashMap.put("message", message);
         reference.child("Chats").push().setValue(hashMap);
 
+    }
+
+    private void readMessage(final String myid, final String userid, final String image) {
+        mchat = new ArrayList<>();
+        reference = FirebaseDatabase.getInstance().getReference("Chats");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                mchat.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Chat chat = dataSnapshot.getValue(Chat.class);
+                    if (chat.getReceiver().equals(myid) && chat.getSender().equals(userid)
+                            || chat.getReceiver().equals(userid) && chat.getSender().equals(myid)) {
+                        mchat.add(chat);
+                    }
+                    messageAdapter = new MessageAdapter(MessageActivity.this, mchat, image);
+                    recyclerView.setAdapter(messageAdapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
