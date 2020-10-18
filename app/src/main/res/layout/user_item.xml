@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="15dp">
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:id="@+id/user_profile_image"
-        android:src="@mipmap/icon"/>
+        android:src="@mipmap/icon_foreground"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,6 +19,34 @@
         android:layout_marginLeft="15dp"
         android:layout_centerVertical="true"
         android:textSize="20sp"/>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:civ_border_width="10dp"
+        app:civ_border_color="#05df29"
+        android:id="@+id/image_on"
+        android:visibility="gone"
+        android:src="@drawable/ic_launcher_background"
+        android:layout_below="@id/user_profile_name"
+        android:layout_toRightOf="@id/user_profile_image"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="-15dp"
+        android:layout_toEndOf="@id/user_profile_image"
+        />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:civ_border_width="10dp"
+        app:civ_border_color="#bfbfbf"
+        android:id="@+id/image_off"
+        android:visibility="gone"
+        android:src="@drawable/ic_launcher_background"
+        android:layout_below="@id/user_profile_name"
+        android:layout_toRightOf="@id/user_profile_image"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="-15dp"
+        android:layout_toEndOf="@id/user_profile_image"
+        />
 
 
 </RelativeLayout>

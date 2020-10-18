@@ -1,15 +1,16 @@
 package com.example.chatapp.Model;
 
 public class User {
-    private String id,username,imageUrl;
+    private String id,username,imageUrl,status;
 
     public User() {
     }
 
-    public User(String id, String username, String imageURL) {
+    public User(String id, String username, String imageUrl, String status) {
         this.id = id;
         this.username = username;
-        this.imageUrl = imageURL;
+        this.imageUrl = imageUrl;
+        this.status = status;
     }
 
     public String getId() {
@@ -32,7 +33,12 @@ public class User {
         return imageUrl;
     }
 
-    public void setImageURL(String imageURL) {
-        this.imageUrl = imageURL;
+   
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
