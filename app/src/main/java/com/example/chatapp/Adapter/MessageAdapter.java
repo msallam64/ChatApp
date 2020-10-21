@@ -30,7 +30,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public MessageAdapter(Context mContext, List<Chat> chats, String imageurl) {
         this.context = mContext;
         this.mchat = chats;
-        this.imageurl = imageurl ;
+        this.imageurl = imageurl;
     }
 
     @NonNull
@@ -51,10 +51,20 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         holder.showMessage.setText(chat.getMessage());
         if (imageurl.equals("default")) {
             holder.userimage.setImageResource(R.mipmap.icon);
-        }else {
+        } else {
             Glide.with(context).load(imageurl).into(holder.userimage);
         }
 
+        if (position == mchat.size() - 1) {
+            if (chat.isIsseen()){
+                holder.txt_seen.setText("Seen");
+            }else {
+                holder.txt_seen.setText("Delivered");
+            }
+        }else {
+            holder.txt_seen.setVisibility(View.GONE);
+
+        }
 
     }
 
@@ -64,13 +74,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView showMessage;
+        TextView showMessage, txt_seen;
         ImageView userimage;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             userimage = itemView.findViewById(R.id.user_image);
             showMessage = itemView.findViewById(R.id.show_message);
+            txt_seen = itemView.findViewById(R.id.txt_seen);
         }
     }
 

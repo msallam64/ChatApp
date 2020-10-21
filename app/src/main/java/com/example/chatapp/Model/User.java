@@ -1,16 +1,25 @@
 package com.example.chatapp.Model;
 
 public class User {
-    private String id,username,imageUrl,status;
+    private String id,username,imageUrl,status,search;
 
     public User() {
     }
 
-    public User(String id, String username, String imageUrl, String status) {
+    public User(String id, String username, String imageUrl, String status,String search) {
         this.id = id;
         this.username = username;
         this.imageUrl = imageUrl;
         this.status = status;
+        this.search=search;
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
     }
 
     public String getId() {
