@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.chatapp.MessageActivity;
+import com.example.chatapp.Activities.MessageActivity;
 import com.example.chatapp.Model.User;
 import com.example.chatapp.R;
 

@@ -1,4 +1,4 @@
-package com.example.chatapp;
+package com.example.chatapp.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,8 +11,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.chatapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -22,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText password, email;
     private Button login;
     private ProgressDialog progressDialog;
+    private TextView forget_password;
 
 
     FirebaseAuth auth;
@@ -38,7 +41,15 @@ public class LoginActivity extends AppCompatActivity {
         email = findViewById(R.id.emaillogin);
         password = findViewById(R.id.passwordlogin);
         login = findViewById(R.id.btn_login);
+        forget_password = findViewById(R.id.forgotpassword);
         progressDialog = new ProgressDialog(this);
+
+        forget_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
+            }
+        });
 
 
         auth = FirebaseAuth.getInstance();

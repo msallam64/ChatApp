@@ -1,4 +1,4 @@
-package com.example.chatapp;
+package com.example.chatapp.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +20,8 @@ import com.example.chatapp.Fragment.ChatsFragment;
 import com.example.chatapp.Fragment.ProfileFragment;
 import com.example.chatapp.Fragment.UsersFragment;
 import com.example.chatapp.Model.User;
+import com.example.chatapp.R;
+import com.example.chatapp.StartActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
