@@ -66,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_password)) {
                     Toast.makeText(LoginActivity.this, "Complete All Fileds", Toast.LENGTH_LONG).show();
+                    progressDialog.dismiss();
                 } else {
                     auth.signInWithEmailAndPassword(txt_email, txt_password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -79,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                                         finish();
                                     } else {
                                         Toast.makeText(LoginActivity.this, "Invaild Mail or Password", Toast.LENGTH_LONG).show();
+                                        progressDialog.dismiss();
 
                                     }
                                 }

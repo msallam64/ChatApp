@@ -47,6 +47,7 @@ public class MessageActivity extends AppCompatActivity {
 
     ImageButton brn_send;
     EditText text_send;
+    String userid;
 
     ValueEventListener seenLitner;
 
@@ -79,7 +80,7 @@ public class MessageActivity extends AppCompatActivity {
         profile_image = findViewById(R.id.profile_image);
         userName = findViewById(R.id.username);
         intent = getIntent();
-        final String userid = intent.getStringExtra("userid");
+        userid = intent.getStringExtra("userid");
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         brn_send.setOnClickListener(new View.OnClickListener() {
@@ -147,6 +148,23 @@ public class MessageActivity extends AppCompatActivity {
         hashMap.put("message", message);
         hashMap.put("isseen", false);
         reference.child("Chats").push().setValue(hashMap);
+
+        final DatabaseReference chatRef=FirebaseDatabase.getInstance().getReference("Chatlist")
+                .child(firebaseUser.getUid())
+                .child(userid);
+        chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()){
+                    chatRef.child("id").setValue(userid);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 
