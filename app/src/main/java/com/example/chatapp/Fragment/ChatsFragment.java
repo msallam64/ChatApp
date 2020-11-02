@@ -15,6 +15,7 @@ import com.example.chatapp.Adapter.UserAdapter;
 import com.example.chatapp.Model.Chat;
 import com.example.chatapp.Model.Chatlist;
 import com.example.chatapp.Model.User;
+import com.example.chatapp.Notification.Token;
 import com.example.chatapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,13 +53,13 @@ public class ChatsFragment extends Fragment {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         userList = new ArrayList<>();
 
-        reference=FirebaseDatabase.getInstance().getReference("Chatlist").child(firebaseUser.getUid());
+        reference = FirebaseDatabase.getInstance().getReference("Chatlist").child(firebaseUser.getUid());
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userList.clear();
-                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
-                    Chatlist chatlist=dataSnapshot.getValue(Chatlist.class);
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Chatlist chatlist = dataSnapshot.getValue(Chatlist.class);
                     userList.add(chatlist);
 
                 }
@@ -69,27 +71,34 @@ public class ChatsFragment extends Fragment {
 
             }
         });
+        updateToken(FirebaseInstanceId.getInstance().getToken());
 
 
         return view;
     }
 
+    private void updateToken(String token) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+        Token token1 = new Token(token);
+        reference.child(firebaseUser.getUid()).setValue(token1);
+    }
+
     private void chatList() {
-        mUser=new ArrayList<>();
-        reference=FirebaseDatabase.getInstance().getReference("Users");
+        mUser = new ArrayList<>();
+        reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 mUser.clear();
-                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
-                    User user=dataSnapshot.getValue(User.class);
-                    for (Chatlist chatlist:userList){
-                        if (user.getId().equals(chatlist.getId())){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    User user = dataSnapshot.getValue(User.class);
+                    for (Chatlist chatlist : userList) {
+                        if (user.getId().equals(chatlist.getId())) {
                             mUser.add(user);
                         }
                     }
                 }
-                userAdapter=new UserAdapter(getContext(),mUser,true);
+                userAdapter = new UserAdapter(getContext(), mUser, true);
                 recyclerView.setAdapter(userAdapter);
             }
 

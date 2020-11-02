@@ -7,7 +7,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
-public class MyFirebaseidSender extends FirebaseInstanceIdService {
+public class MyFirebaseidService extends FirebaseInstanceIdService {
 
     @Override
     public void onTokenRefresh() {

@@ -55,9 +55,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         } else {
             Glide.with(context).load(user.getImageURL()).into(holder.userimage);
         }
-        if (ischat){
-            lastMessage(user.getId(),holder.last_mes);
-        }else {
+        if (ischat) {
+            lastMessage(user.getId(), holder.last_mes);
+        } else {
             holder.last_mes.setVisibility(View.GONE);
         }
 
@@ -111,9 +111,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Chat chat = dataSnapshot.getValue(Chat.class);
-                    if (chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userid) ||
-                            chat.getReceiver().equals(userid) && chat.getSender().equals(firebaseUser.getUid())) {
-                        lastMessage = chat.getMessage();
+                    if (firebaseUser != null) {
+                        if (chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userid) ||
+                                chat.getReceiver().equals(userid) && chat.getSender().equals(firebaseUser.getUid())) {
+                            lastMessage = chat.getMessage();
+                        }
                     }
                 }
                 switch (lastMessage) {
